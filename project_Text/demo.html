@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>getting the json</title>
+    </head>
+    <body>
+        
+            <table border="1" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th> name</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table">
+                           
+                            </tbody>
+                           
+
+        </table>
+        
+
+        
+        <script>
+const endpointUrl = "https://dgldigital.com/api/AClass"; // Replace with your API endpoint URL
+const tableElement = document.getElementById("table"); // Replace with the ID of the table element in your HTML
+
+// Make a request to the API and handle the response
+fetch(endpointUrl).then(res=> res.json())
+.then(data =>{
+
+const rows=data.map(item => {
+
+return `<tr>
+          <td>${item.id} </td>
+          <td>${item.name}</td>
+         </tr>`
+
+        });
+    tableElement.innerHTML =`${rows.join("")}`;
+              
+}).catch(error =>{
+    console.error(error)
+})
+
+            </script>
+    </body>
+</html>
