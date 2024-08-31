@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carousel Plugin</title>
+    <style>
+        .outer-container {
+            width: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+        .inner-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .inner-container img {
+            min-width: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+        }
+        .main_slider_div {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carousel Plugin Example</h1>
+    <div class="main_slider_div">
+        <div class="outer-container">
+            <div class="inner-container">
+                <img src="https://th.bing.com/th?id=OIP.S1dPiODc5rCcWObk4DThygHaEo&w=316&h=197&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="slider">
+                <img src="https://th.bing.com/th/id/OIP.NmvtzpgAyT0DacdIBWF5xwHaEo?w=322&h=180&c=7&r=0&o=5&pid=1.7" alt="" class="slider">
+                <img src="https://th.bing.com/th?id=OIP.AfZOQ34v_iAxGUUB1R05wQHaFZ&w=292&h=213&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="slider">
+            </div>  
+        </div>
+        <button class="prev" data-target=".inner-container">Prev</button>
+        <button class="next" data-target=".inner-container">Next</button>
+    </div>
+
+    <div class="main_slider_div">
+        <div class="outer-container">
+            <div class="inner-container">
+                <img src="https://th.bing.com/th?id=OIP.S1dPiODc5rCcWObk4DThygHaEo&w=316&h=197&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="slider">
+                <img src="https://th.bing.com/th/id/OIP.NmvtzpgAyT0DacdIBWF5xwHaEo?w=322&h=180&c=7&r=0&o=5&pid=1.7" alt="" class="slider">
+                <img src="https://th.bing.com/th?id=OIP.AfZOQ34v_iAxGUUB1R05wQHaFZ&w=292&h=213&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="slider">
+            </div>  
+        </div>
+        <button class="prev disabled" data-target=".inner-container">Prev</button>
+        <button class="next disabled" data-target=".inner-container">Next</button>
+    </div>
+
+    <script>
+        function mySlider(slider) {
+            let currentIndex = 0;
+            const innerContainer = slider.querySelector('.inner-container');
+            const items = innerContainer.querySelectorAll('.slider');
+            const len = items.length;
+            const prevButton = slider.querySelector('.prev');
+            const nextButton = slider.querySelector('.next');
+
+            function updateButtons() {
+                if (prevButton.classList.contains('disabled')) {
+                    prevButton.disabled = currentIndex === 0;
+                }
+                if (nextButton.classList.contains('disabled')) {
+                    nextButton.disabled = currentIndex === len - 1;
+                }
+            }
+
+            function slideTo(index) {
+                let position = -index * 100;
+                innerContainer.style.transform = `translateX(${position}%)`;
+                currentIndex = index;
+                updateButtons();
+            }
+
+            prevButton.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    slideTo(currentIndex - 1);
+                }
+            });
+
+            nextButton.addEventListener('click', function() {
+                if (currentIndex < len - 1) {
+                    slideTo(currentIndex + 1);
+                }
+            });
+
+            updateButtons();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sliders = document.querySelectorAll('.main_slider_div');
+            sliders.forEach(function(slider) {
+                mySlider(slider);
+            });
+        });
+    </script>
+</body>
+</html>

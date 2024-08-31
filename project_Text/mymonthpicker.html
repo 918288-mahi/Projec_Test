@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carousel Plugin</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        .my_main_datepicker {
+            position: absolute;
+        }
+        .selected__year > .year_item_txt {
+            background-color: #B2DFDB;
+            color: white;
+        }
+        .selected__month  {
+            background-color: #B2DFDB !important;
+            color: white;
+        }
+        .mydate__months {
+            margin: 0;
+            padding: 5px 10px;
+            width: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .my__datepicker__container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+           
+        }
+        .months_item ,
+        .year_item{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: calc((100%)/3 - 4px);
+            background-color: #dfdfdf;
+            margin: 2px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+        .months_item:hover,
+          .year_item:hover {
+            background-color: #B2DFDB ;
+    
+        }
+   
+        .months_item_txt {
+            margin: 0;
+            padding: 10px;
+            margin: 2px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+        }
+        .months_item_txt:hover {
+            cursor: pointer;
+            
+        }
+        .my_datepicker_conatiner {
+            display: block;
+            width: 250px;
+            padding: 5px;
+            background-color: #f0f0f0;
+        }
+        .my_datepicker.prev_year_next_container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .my_datepicker .year_txt {
+            margin: 0;
+            padding: 10px;
+        }
+
+        .year_item_txt {
+            margin: 0;
+            padding: 10px;
+            margin: 2px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+        }
+        .year_item_txt:hover {
+            cursor: pointer;
+           
+        }
+        .current_month,
+        .current__year {
+            background-color: #9199ff8f;
+        }
+        .my_datepicker_btns {
+            background-color: transparent;
+            height: fit-content;
+            border: none;
+            outline: none;
+        }
+        .my_datepicker_btns:hover{
+         transform: scale(1.02);
+         cursor: pointer;
+        }
+    
+    </style>
+</head>
+<body>
+    <h1>Carousel Plugin Example</h1>
+    <input type="text" id="datepicker" />
+    <input type="text" id="datepicker2" />
+    <input type="text" id="datepicker1" />
+    <script>
+        (function($) {
+            $.fn.myDatepicker = function(options) {
+                return this.each(function() {
+                    let settings = $.extend({
+                        fullMonth: false,
+                        monthsShowOnNumber: false,
+                        width: 250,
+                    }, options);
+                  
+                    const right__Arrow=`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                        <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z" class="my_datepicker_black"/>
+                        <path d="M9.293 8.707 12.586 12l-3.293 3.293 1.414 1.414L15.414 12l-4.707-4.707-1.414 1.414z"/></svg>`
+                        const left__Arrow=`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                            <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8z" class="my_datepicker_black"/>
+                            <path d="M13.293 7.293 8.586 12l4.707 4.707 1.414-1.414L11.414 12l3.293-3.293-1.414-1.414z"/></svg>`
+
+                    let months = settings.fullMonth ? [
+                        "January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ] : [
+                        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                    ];
+
+                    if ($('#my_main_datepicker').length === 0) {
+                        let current_year = new Date().getFullYear();
+                        let current_month = new Date().getMonth();
+                        let current_month_dates=new Date().getDay()
+                        console.log(current_month_dates,'current_month_dates')
+
+                        let appendMonths = months.map(function(mon, index) {
+                         
+                                return `<div class="months_item ${index === current_month ? 'current_month' : ''}" data-value="${mon}"><p class="months_item_txt ">${mon}</p></div>`;
+                            
+                        }).join('');
+
+                        let mainAppend = `
+                            <div class="my_main_datepicker" style="width:${settings.width}px" id="my_main_datepicker">
+                                <div class="my_datepicker_conatiner">
+                                    <div class="my_datepicker prev_year_next_container">
+                                        <button type="button" class="prev my_datepicker_btns">${left__Arrow}</button>
+                                        <p class="my_datepicker year_txt" data-value="${current_year}">${current_year}</p>
+                                        <button type="button" class="next my_datepicker_btns">${right__Arrow}</button>
+                                    </div>
+                                    <div class="my__datepicker__container datepicker_replace_section">
+                                        ${appendMonths}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        $('body').append(mainAppend);
+
+                        let $myDatepicker = $('#my_main_datepicker');
+                        let isOpenYears = false;
+                        let selected__year = '';
+                        let selected__month = '';
+                        let max_year='';
+
+                        $myDatepicker.find('.prev').on('click', function() {
+                            console.log(isOpenYears,'pre')
+                            if (isOpenYears ===false) {
+                                current_year--;
+                                $myDatepicker.find('.year_txt').text(current_year).attr('data-value', current_year);
+                            }else{
+                                changeAppendYearsHandle(max_year,'pre')
+                               
+                            }
+                           
+                        });
+
+                        $myDatepicker.find('.next').on('click', function() {
+                            console.log(isOpenYears,'next')
+                            if (isOpenYears ===false) {
+                                
+                                current_year++;
+                                $myDatepicker.find('.year_txt').text(current_year).attr('data-value', current_year);
+                            }else{
+                                changeAppendYearsHandle(max_year,'next')
+                            }
+                           
+                        });
+
+                        $myDatepicker.find('.year_txt').on('click', function() {
+                            appendYearsHandle();
+                            isOpenYears = true;
+                        });
+
+                        function appendYearsHandle() {
+                            
+                            let appendYears = '';
+                            for (let i = current_year -1 ; i <= current_year + 10; i++) {
+                                max_year=Math.max(i);
+                              
+                                let current__year = current_year === i ? 'current__year' : '';
+                                appendYears += `<div class="year_item ${current__year}" data-value="${i}"><p class="year_item_txt ">${i}</p></div>`;
+                            }
+                            $myDatepicker.find('.datepicker_replace_section').html(appendYears);
+                        }
+                        function changeAppendYearsHandle(val,type) {
+                          
+                            let appendYears = '';
+                            if(type==='next'){
+                            for (let i = val+1 ; i <= val + 12; i++) {
+                                max_year=Math.max(i)
+                               
+                                appendYears += `<div class="year_item" data-value="${i}"><p class="year_item_txt ">${i}</p></div>`;
+                                
+                            }
+                        }else{
+                            for (let i = val -1; i >= val - 12; i--) {
+                                max_year=Math.max(i)
+        
+                                appendYears += `<div class="year_item" data-value="${i}"><p class="year_item_txt ">${i}</p></div>`;
+                                
+                            }
+                        }
+                            $myDatepicker.find('.datepicker_replace_section').html(appendYears);        
+                         }
+
+
+                        $myDatepicker.on('click', '.year_item', function() {
+                            let year_value = $(this).data('value');
+                            selected__year = year_value;
+                            $myDatepicker.find('.year_txt').text(year_value).attr('data-value', year_value);
+                            $(this).addClass('selected__year');
+                            $myDatepicker.find('.selected__year').not(this).removeClass('selected__year');
+                            $myDatepicker.find('.datepicker_replace_section').html(appendMonths);
+                            isOpenYears = false;
+                        });
+
+                        $myDatepicker.on('click', '.months_item', function() {
+                            let month_value = $(this).data('value');
+                            console.log(month_value,'hkl')
+                            selected__year = selected__year || $('.year_txt').data('value');
+                            selected__month = month_value;
+                            $(this).addClass('selected__month');
+                            $myDatepicker.find('.selected__month').not(this).removeClass('selected__month');
+                            checkSelectedDate();
+                        });
+
+                        function checkSelectedDate() {
+                            if (selected__year !== '' && selected__month !== '') {
+                             let selectedDate = `${selected__month}-${selected__year}`;
+                                
+                                $('.my_datepicker_active').val(selectedDate);
+                                $myDatepicker.hide();
+                            }
+                        }
+
+                        $(document).on('click', function(event) {
+                            if (!$myDatepicker.is(event.target) && $myDatepicker.has(event.target).length === 0 && !$('.my_datepicker_active').is(event.target)) {
+                                $myDatepicker.hide();
+                            }
+                        });
+
+                        $myDatepicker.on('click', function(event) {
+                            event.stopPropagation();
+                        });
+                    }
+
+                    let $input = $(this);
+                    let $myDatepicker = $('#my_main_datepicker');
+                    $myDatepicker.hide();
+                    $input.on('click', function() {
+                        $('.my_datepicker_active').removeClass('my_datepicker_active');
+                        $input.addClass('my_datepicker_active');
+                        let offset = $input.offset();
+                        let topOffset = offset.top + $input.outerHeight();
+                        let leftOffset = offset.left;
+
+                        $myDatepicker.show().css({
+                            top: topOffset,
+                            left: leftOffset
+                        });
+                    });
+                });
+            };
+        })(jQuery);
+
+        $(document).ready(function() {
+            $('#datepicker').myDatepicker({
+                fullMonth: false,
+                monthsShowOnNumber: false,
+                width: 250,
+            });
+            $('#datepicker2').myDatepicker({
+                fullMonth: true,
+                monthsShowOnNumber: false,
+                width: 250,
+            });
+            $('#datepicker1').myDatepicker({
+                fullMonth: false,
+                monthsShowOnNumber: true,
+                width: 250,
+            });
+        });
+    </script>
+</body>
+</html>

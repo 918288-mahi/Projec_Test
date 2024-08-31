@@ -1,10 +1,68 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>helo</title>
-    </head>
-    <body>
-        <h1>hello test</h1>
-        <h1>dev test</h1>
-    </body>
+<head>
+    <title>hello</title>
+    <style>
+        .outer-container {
+            width: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+        .inner-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+         
+            overflow: hidden;
+        }
+        .inner-container img {
+            min-width: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+        }
+        .main_slider_div {
+            position: relative;
+        }
+    </style>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>hello test</h1>
+    <h1>dev test</h1>
+    <div class="main_slider_div">
+        <div class="outer-container">
+            <div class="inner-container">
+                <img src="https://th.bing.com/th?id=OIP.S1dPiODc5rCcWObk4DThygHaEo&w=316&h=197&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="slider">
+                <img src="https://th.bing.com/th/id/OIP.NmvtzpgAyT0DacdIBWF5xwHaEo?w=322&h=180&c=7&r=0&o=5&pid=1.7" alt="" class="slider">
+                <img src="https://th.bing.com/th?id=OIP.AfZOQ34v_iAxGUUB1R05wQHaFZ&w=292&h=213&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" class="slider">
+            </div>  
+        </div>
+    </div>
+
+
+    <button  class="prev">pre</button>
+    <button class="next">next</button>
+
+    <script>
+ $(document).ready(function(){
+    let container=$('.inner-container')
+    let item=$('.slider')
+    let itenWidth=item.outerWidth(true)
+  $('.prev').on('click',function(){
+    $(container).animate({scrollLeft:container.scrollLeft()-itenWidth},500)
+    console.log(itenWidth,container.scrollLeft())
+  })
+  $('.next').on('click',function(){
+    $(container).animate({scrollLeft:container.scrollLeft()+itenWidth},500)
+    console.log(itenWidth)
+})
+ })
+    </script>
+</body>
 </html>
